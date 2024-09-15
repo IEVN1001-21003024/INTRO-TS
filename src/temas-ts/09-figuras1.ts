@@ -1,33 +1,31 @@
-export class Figuras {
-    private area: number = 0;
-    protected altura_cuadrado:number = 0;
-    protected radio:number = 0;
-    protected lado:number = 0;
+export class Figura {
+    protected area: number | null = null;
 
+    constructor(
+        protected tipo: 'Rectangulo' | 'Circulo' | 'Cuadrado', 
+        protected dimensiones: number[]
+    ) {
+        this.calcularArea();
+    }
 
-    calcularAreaRectangulo(base: number, altura_cuadrado: number): number {
-        this.area = base * altura_cuadrado;
-        console.log(`Área del rectángulo: ${this.area}`);
+    private calcularArea(): void {
+        if (this.tipo === 'Cuadrado') {
+            const lado = this.dimensiones[0];
+            this.area = lado ** 2;
+        } else if (this.tipo === 'Rectangulo') {
+            const [largo, ancho] = this.dimensiones;
+            this.area = largo * ancho;
+        } else if (this.tipo === 'Circulo') {
+            const radio = this.dimensiones[0];
+            this.area = Math.PI * radio ** 2;
+        }
+    }
+
+    getArea(): number | null {
         return this.area;
     }
 
-    calcularAreaCuadrado(lado: number): number {
-        this.area = lado * lado;
-        console.log(`Área del cuadrado: ${this.area}`);
-        return this.area;
-    }
-
-    calcularAreaCirculo(radio: number): number {
-        this.area = Math.PI * radio * radio;
-        console.log(`Área del círculo: ${this.area}`);
-        return this.area;
+    getTipo(): 'Rectangulo' | 'Circulo' | 'Cuadrado' {
+        return this.tipo;
     }
 }
-
-const figuras = new Figuras();
-
-const areaRectangulo = figuras.calcularAreaRectangulo(10, 5);
-const areaCuadrado = figuras.calcularAreaCuadrado(4);
-const areaCirculo = figuras.calcularAreaCirculo(3);
-
-export { areaRectangulo, areaCuadrado, areaCirculo };

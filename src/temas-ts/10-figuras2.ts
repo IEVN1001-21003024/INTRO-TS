@@ -1,35 +1,36 @@
-import { areaRectangulo, areaCuadrado, areaCirculo } from './09-figuras1';
+import { Figura } from './09-figuras1';
 
-class Volumen {
-    calcularVolumen(area: number, altura: number): number {
-        return area * altura;
+export class Figura3D {
+    protected volumen: number | null = null;
+
+    constructor(
+        private figura: Figura,
+        private altura: number
+    ) {
+        this.calcularVolumen();
+    }
+
+    private calcularVolumen(): void {
+        const area = this.figura.getArea();
+        if (area !== null) {
+            this.volumen = area * this.altura;
+        }
+    }
+
+    imprimir(): void {
+        console.log(`Área del ${this.figura.getTipo().toLowerCase()}: ${this.figura.getArea()?.toFixed(2)}`);
+        console.log(`Volumen del ${this.figura.getTipo().toLowerCase()}: ${this.volumen?.toFixed(2)}`);
     }
 }
 
-class VolumenCalculator {
-    calcularVolumenRectangular(area: number, altura: number): number {
-        const volumen = new Volumen();
-        return volumen.calcularVolumen(area, altura);
-    }
+const figura1 = new Figura('Rectangulo', [10, 4]);
+const figura2 = new Figura('Circulo', [3]);
+const figura3 = new Figura('Cuadrado', [5]);
 
-    calcularVolumenCubo(area: number, lado: number): number {
-        const volumen = new Volumen();
-        return volumen.calcularVolumen(area, lado);
-    }
+const figuras3D = [
+    new Figura3D(figura1, 5),
+    new Figura3D(figura2, 7),
+    new Figura3D(figura3, 6)
+];
 
-    calcularVolumenCilindro(area: number, altura: number): number {
-        const volumen = new Volumen();
-        return volumen.calcularVolumen(area, altura);
-    }
-}
-
-const volumenCalc = new VolumenCalculator();
-
-const volumenRect = volumenCalc.calcularVolumenRectangular(areaRectangulo, 4);
-console.log(`Volumen del prisma rectangular: ${volumenRect}`);
-
-const volumenCubo = volumenCalc.calcularVolumenCubo(areaCuadrado, Math.sqrt(areaCuadrado));
-console.log(`Volumen del cubo: ${volumenCubo}`);
-
-const volumenCilindro = volumenCalc.calcularVolumenCilindro(areaCirculo, 15);
-console.log(`Volumen del cilindro: ${volumenCilindro}`);
+figuras3D.forEach(figura => figura.imprimir());
